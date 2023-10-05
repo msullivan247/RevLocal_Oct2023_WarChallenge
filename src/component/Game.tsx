@@ -26,10 +26,20 @@ export const Game = () => {
             </Stack>
             <Stack direction="column" minWidth="15rem" spacing="1rem">
                 {gameState.gameResult === null &&
-                    <Typography>{gameState.flippedA ? `Player A flipped: ${getCardName(gameState.flippedA as Card)}` : null}</Typography>
+                    <Stack direction="row" spacing="0.5rem">
+                        <Typography>{gameState.flippedA ? "Player A flipped:" : null}</Typography>
+                        {gameState.flippedA !== null &&
+                            <CardName card={gameState.flippedA as Card} />
+                        }
+                    </Stack>
                 }
                 {gameState.gameResult === null &&
-                    <Typography>{gameState.flippedA ? `Player B flipped: ${getCardName(gameState.flippedB as Card)}` : null}</Typography>
+                    <Stack direction="row" spacing="0.5rem">
+                        <Typography>{gameState.flippedB ? "Player B flipped:" : null}</Typography>
+                        {gameState.flippedB !== null &&
+                            <CardName card={gameState.flippedB as Card} />
+                        }
+                    </Stack>
                 }
                 <Typography>{gameState.gameResult || gameState.flipResult}</Typography>
                 {gameState.gameResult === null && 
@@ -44,7 +54,11 @@ export const Game = () => {
     );
 };
 
-const CardName: React.FC<{ card: Card; }> = ({card}) => <Typography variant="body1">{getCardName(card)}</Typography>;
+const CardName: React.FC<{ card: Card; }> = ({card}) =>
+    <Typography
+        variant="body1"
+        color={ ["♦", "♥"].includes(card.suit) ? "red": "black" }
+    >{getCardName(card)}</Typography>;
 
 const getCardName = (card: Card): string => `${Object.keys(Rank)[parseInt(card.rank) - 2]} of ${card.suit}`;
 
